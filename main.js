@@ -5,6 +5,7 @@ const path = require('path');
 const {app, BrowserWindow, Menu} = electron;
 
 let mainWindow;
+let addWindow;
 
 // Listen for app to be ready
 app.on('ready', function(){
@@ -16,28 +17,63 @@ app.on('ready', function(){
         protocol: 'file:',
         slashes: true
     }));
+    // Quit app when the main window is closed
+    mainWindow.on('closed', function(){
+        app.quit();
+    });
 
     // Build menu from template below
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
     // Insert menu
     Menu.setApplicationMenu(mainMenu);
+
 })
+
+// Handle create the add window
+function createAddWindow(){
+    // Create new window
+    addWindow = new BrowserWindow({
+        width: 100,
+        height: 100,
+        title: 'Add Shopping List Items'
+    });
+    // Load html into window
+    addWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'addWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // Garbage collection
+    addWindow.on('close', function(){addWindow = null;});
+}
 
 // Create menu template
 const mainMenuTemplate = [
     {
-        label: 'File',
+        label: '&File',
         submenu: [
-            {
-                label: 'Add Item',
-            },
-            {
-                label: 'Clear Item',
-            },
-            {
-                label: 'Quit',
-                click(){ app.quit(); }
-            }
+            {label: 'Add Item', click(){createAddWindow();}},
+            {label: 'Clear Item'},
+            {label: '&Quit', click(){ app.quit(); }}
         ]
     }
 ];
+
+// If Mac, add empty menu item
+if(process.platform == 'darwin'){
+    mainMenuTemplate.unshift({});
+}
+
+// Add developer tools item if not in prod
+if(process.env.NODE_ENV !== 'production'){
+    mainMenuTemplate.push({
+        label: '&Developer Tools',
+        submenu: [
+            {
+                label: '&Toggle DevTools',
+                click(item, focusedWindow){focusedWindow.toggleDevTools();}
+            },
+            {role: 'reload',}
+        ]
+    });
+}
