@@ -1,0 +1,23 @@
+{
+  "name": "shop",
+  "version": "1.0.0",
+  "description": "Shopping list desktop app",
+  "main": "main.js",
+  "scripts": {
+      "start": "electron ."
+  },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/lackhoa/shop.git"
+    },
+    "author": "Vo Dang Khoa",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/lackhoa/shop/issues"
+    },
+    "homepage": "https://github.com/lackhoa/shop#readme",
+    "dependencies": {
+        "electron": "^4.0.1",
+        "node.js": "0.0.0"
+    }
+}
