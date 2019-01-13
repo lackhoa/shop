@@ -33,7 +33,7 @@ app.on('ready', function(){
 function createAddWindow(){
     // Create new window
     addWindow = new BrowserWindow({
-        width: 200,
+        width: 300,
         height: 200,
         title: 'Add Shopping List Items'
     });
@@ -59,10 +59,24 @@ const mainMenuTemplate = [
         label: '&File',
         submenu: [
             {label: '&Add Item', click(){createAddWindow();}},
-            {label: '&Clear Item', click(){
-                mainWindow.webContents.send('item:clear');
-            }},
-            {label: '&Quit', click(){ app.quit(); }}
+            {
+                label: '&Clear Item', click(){
+                    mainWindow.webContents.send('item:clear');
+                }
+            },
+            {label: '&Quit', click(){ app.quit(); }},
+        ]
+    },
+    {
+        label: '&Developer Tools',
+        submenu: [
+            {
+                label: '&Toggle DevTools',
+                click(item, focusedWindow) {
+                    focusedWindow.toggleDevTools();
+                }
+            },
+            {role: 'reload',}
         ]
     }
 ];
@@ -70,18 +84,4 @@ const mainMenuTemplate = [
 // If Mac, add empty menu item
 if(process.platform == 'darwin'){
     mainMenuTemplate.unshift({});
-}
-
-// Add developer tools item if not in prod
-if(process.env.NODE_ENV !== 'production'){
-    mainMenuTemplate.push({
-        label: '&Developer Tools',
-        submenu: [
-            {
-                label: '&Toggle DevTools',
-                click(item, focusedWindow){focusedWindow.toggleDevTools();}
-            },
-            {role: 'reload',}
-        ]
-    });
 }

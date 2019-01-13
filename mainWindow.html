@@ -2,10 +2,14 @@
 <html lang="en">
   <head>
     <title>ShoppingList</title>
+    <!--Materialize-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   </head>
   <body>
-    <h1>Shopping List</h1>
-    <ul></ul>
+    <nav class="nav-wrapper">
+      <a class="brand-logo center">Shopping List</a>
+    </nav>
+    <ul class="collection"></ul>
 
     <script>
       const electron = require('electron');
@@ -15,6 +19,7 @@
       // catch add item
       ipcRenderer.on('item:add', function(e, item){
           const li = document.createElement('li');
+          li.className = 'collection-item';
           const itemText = document.createTextNode(item);
           li.appendChild(itemText);
           ul.appendChild(li);
